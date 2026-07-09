@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal ID Card Generator</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Ambient Glow Background Spheres -->
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+
+    <h1>Universal ID Card Generator</h1>
+
+    <div class="wrapper" id="mainWrapper">
+        <!-- LEFT WIZARD FORM -->
+        <div class="form-card" id="formCard">
+            <div class="wizard-header">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <div class="steps-steps">
+                    <div class="step-indicator active" data-step="1">
+                        <span class="step-num">1</span>
+                        <span class="step-label">Type</span>
+                    </div>
+                    <div class="step-indicator" data-step="2">
+                        <span class="step-num">2</span>
+                        <span class="step-label">Details</span>
+                    </div>
+                    <div class="step-indicator" data-step="3">
+                        <span class="step-num">3</span>
+                        <span class="step-label">Contact</span>
+                    </div>
+                    <div class="step-indicator" data-step="4">
+                        <span class="step-num">4</span>
+                        <span class="step-label">Uploads</span>
+                    </div>
+                </div>
+                <div class="step-text" id="stepText">Step 1 of 4: Select Card Type</div>
+            </div>
+
+            <form id="wizardForm" onsubmit="return false;">
+                <!-- STEP 1 -->
+                <div class="step-panel active" id="stepPanel1">
+                    <div class="form-group">
+                        <label class="group-label">Card Type</label>
+                        <div class="card-type-grid">
+                            <label class="card-type-card active">
+                                <input type="radio" name="cardType" value="student" checked>
+                                <div class="card-type-inner">
+                                    <span class="card-type-icon">🎓</span>
+                                    <span class="card-type-title">Student</span>
+                                </div>
+                            </label>
+                            <label class="card-type-card">
+                                <input type="radio" name="cardType" value="employee">
+                                <div class="card-type-inner">
+                                    <span class="card-type-icon">💼</span>
+                                    <span class="card-type-title">Employee</span>
+                                </div>
+                            </label>
+                            <label class="card-type-card">
+                                <input type="radio" name="cardType" value="member">
+                                <div class="card-type-inner">
+                                    <span class="card-type-icon">🏛️</span>
+                                    <span class="card-type-title">Member</span>
+                                </div>
+                            </label>
+                            <label class="card-type-card">
+                                <input type="radio" name="cardType" value="attendee">
+                                <div class="card-type-inner">
+                                    <span class="card-type-icon">🎫</span>
+                                    <span class="card-type-title">Attendee</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter Full Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="studentIdLabel" for="studentId">Student ID</label>
+                        <input type="text" id="studentId" placeholder="Enter Student ID" required>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-panel" id="stepPanel2">
+                    <div class="form-group">
+                        <label id="universityLabel" for="university">University / Institute</label>
+                        <input type="text" id="university" placeholder="Enter University / Institute" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="programLabel" for="program">Program</label>
+                        <input type="text" id="program" placeholder="Enter Program" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="sessionLabel" for="session">Semester</label>
+                        <input type="text" id="session" placeholder="Enter Semester" required>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-panel" id="stepPanel3">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" placeholder="Enter Mobile Number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="validity">Validity</label>
+                        <input type="text" id="validity" placeholder="DD-MM-YYYY" required>
+                        <small class="form-helper">Format: DD-MM-YYYY or validity text</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" placeholder="Enter Full Address" rows="2" required></textarea>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="step-panel" id="stepPanel4">
+                    <div class="form-group">
+                        <label>Upload Logo</label>
+                        <div class="file-drop-zone" id="logoDropZone">
+                            <div class="drop-zone-content">
+                                <span class="drop-icon">🏢</span>
+                                <p class="drop-text">Drag logo here or click to upload</p>
+                            </div>
+                            <input type="file" id="logoUpload" accept="image/*">
+                        </div>
+                        <div class="upload-preview" id="logoPreviewWrapper" style="display: none;">
+                            <img id="logoPreviewImg" src="" alt="Logo Preview">
+                            <button type="button" class="remove-upload-btn" id="removeLogoBtn">Remove</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Photo</label>
+                        <div class="file-drop-zone" id="photoDropZone">
+                            <div class="drop-zone-content">
+                                <span class="drop-icon">👤</span>
+                                <p class="drop-text">Drag photo here or click to upload</p>
+                            </div>
+                            <input type="file" id="imageUpload" accept="image/*">
+                        </div>
+                        <div class="upload-preview" id="photoPreviewWrapper" style="display: none;">
+                            <img id="photoPreviewImg" src="" alt="Photo Preview">
+                            <button type="button" class="remove-upload-btn" id="removePhotoBtn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wizard Navigation Buttons -->
+                <div class="wizard-actions">
+                    <button type="button" class="btn btn-back" id="backBtn" style="display: none;">Back</button>
+                    <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+                    <button type="button" class="btn btn-generate" id="generateBtn" style="display: none;">Generate ID Card</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIGHT CARD PREVIEW & RESULTS -->
+        <div class="card-container" id="cardContainer" style="display: none;">
+            <div class="card-flip" id="cardFlip">
+                <!-- FRONT -->
+                <div class="card-front">
+                    <!-- Security Watermark -->
+                    <img id="cardWatermark" class="card-watermark" src="" alt="">
+                    
+                    <div class="card-accent-bar"></div>
+                    <div class="front-top">
+                        <div class="logo-wrapper">
+                            <img id="uniLogoFront" src="https://via.placeholder.com/50" alt="Logo">
+                        </div>
+                        <div class="header-details">
+                            <h2 id="uniFront">INSTITUTE NAME</h2>
+                            <div class="card-badge" id="cardBadge">STUDENT</div>
+                        </div>
+                    </div>
+                    <div class="front-content">
+                        <div class="front-details">
+                            <p class="detail-item name-item"><span id="previewNameFront">Student Name</span></p>
+                            
+                            <div class="info-grid">
+                                <div class="info-cell">
+                                    <span class="info-label" id="previewProgramLabel">Program</span>
+                                    <span class="info-val" id="previewProgramFront">Course</span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="info-label" id="previewSessionLabel">Semester</span>
+                                    <span class="info-val" id="previewSessionFront">YYYY</span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="info-label">Mobile</span>
+                                    <span class="info-val" id="previewMobileFront">01XXXXXXXXX</span>
+                                </div>
+                                <div class="info-cell">
+                                    <span class="info-label">Validity</span>
+                                    <span class="info-val" id="previewValidityFront">DD-MM-YYYY</span>
+                                </div>
+                            </div>
+
+                            <div class="address-block" id="addressBlock">
+                                <span class="info-label">Address</span>
+                                <p id="previewAddressFront" class="address-text">123 Street Name, City, Country</p>
+                            </div>
+                        </div>
+                        <div class="front-photo">
+                            <div class="photo-frame">
+                                <img id="previewImgFront" src="https://api.dicebear.com/7.x/personas/svg" alt="Profile">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barcode" id="barcodeFront">ID: XXXXXXXXXX</div>
+                </div>
+
+                <!-- BACK -->
+                <div class="card-back">
+                    <div class="card-accent-bar"></div>
+                    <div class="back-top">
+                        <h2 id="uniBack">INSTITUTE NAME</h2>
+                    </div>
+                    <div class="back-content">
+                        <div class="back-instructions">
+                            <p id="backText">This card is issued for official identification purposes. If found, please return to the issuing organization.</p>
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <span class="signature-label">Authorized Signature</span>
+                            </div>
+                        </div>
+                        <div class="qr-wrapper">
+                            <img id="qrCodeBack" src="" alt="QR Code">
+                            <span class="qr-text">Scan for Verification</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULT VIEW BUTTON ACTIONS -->
+            <div class="result-actions" id="resultActions">
+                <button type="button" id="printBtn" class="btn btn-print">Print ID Card</button>
+                <button type="button" id="editBtn" class="btn btn-edit">Back / Edit Details</button>
+                <button type="button" id="resetBtn" class="btn btn-reset">Create Another Card</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

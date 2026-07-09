@@ -1,0 +1,1001 @@
+/* ================= GLOBAL & LAYOUT ================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Ambient Glow Background Spheres */
+.glow-sphere {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(120px);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.glow-1 {
+    top: -120px;
+    left: -120px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0.05) 70%);
+}
+
+.glow-2 {
+    bottom: -150px;
+    right: -150px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.02) 70%);
+}
+
+h1 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+    background: linear-gradient(to right, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.8px;
+    text-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+}
+
+/* ================= WIZARD FORM CONTAINER ================= */
+.form-card {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #0f172a;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 580px; /* Spacious, centers form beautifully */
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+/* ================= WIZARD HEADER & PROGRESS ================= */
+.wizard-header {
+    margin-bottom: 30px;
+}
+
+.progress-bar-container {
+    background: #e2e8f0;
+    height: 6px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(to right, #3b82f6, #60a5fa);
+    height: 100%;
+    width: 25%; /* Initial step */
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.steps-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    z-index: 5;
+}
+
+.step-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    transition: all 0.3s ease;
+}
+
+/* Connectors */
+.step-indicator:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: calc(50% + 16px);
+    width: calc(100% - 32px);
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+.step-indicator.active .step-num {
+    background: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.step-indicator.active .step-label {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* Completed Step showing checkmark */
+.step-indicator.completed .step-num {
+    background: #10b981;
+    color: transparent; /* hide original number */
+    position: relative;
+}
+
+.step-indicator.completed .step-num::after {
+    content: '✓';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.step-indicator.completed .step-label {
+    color: #10b981;
+    font-weight: 500;
+}
+
+.step-indicator.completed:not(:last-child)::after {
+    background: #10b981;
+}
+
+.step-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ================= STEP PANEL PANELS ================= */
+.step-panel {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.step-panel.active {
+    display: flex;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= FORM ELEMENTS ================= */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.form-group label.group-label {
+    margin-bottom: 4px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #1e293b;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    resize: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.form-helper {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* ================= CARD TYPE GRID ================= */
+.card-type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.card-type-card {
+    cursor: pointer;
+    position: relative;
+}
+
+.card-type-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.card-type-inner {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.card-type-card:hover .card-type-inner {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+.card-type-card.active .card-type-inner {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.card-type-icon {
+    font-size: 1.6rem;
+}
+
+.card-type-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.card-type-card.active .card-type-title {
+    color: #1d4ed8;
+}
+
+/* ================= FILE UPLOADS ================= */
+.file-drop-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.file-drop-zone:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.drop-icon {
+    font-size: 1.8rem;
+}
+
+.drop-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.file-drop-zone input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.upload-preview img {
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #cbd5e1;
+}
+
+.remove-upload-btn {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: auto;
+}
+
+.remove-upload-btn:hover {
+    background: #fecaca;
+}
+
+/* ================= BUTTONS & NAVIGATION ================= */
+.wizard-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-back {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-back:hover {
+    background: #e2e8f0;
+}
+
+.btn-next {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.15);
+}
+
+.btn-next:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+}
+
+.btn-generate {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.15);
+}
+
+.btn-generate:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(5, 150, 105, 0.25);
+}
+
+/* ================= CARD PREVIEW CONTAINER ================= */
+.card-container {
+    perspective: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* ================= CARD FLIP WRAPPER ================= */
+.card-flip {
+    width: 480px; /* Scaled up card width for browser layout */
+    height: 300px; /* Scaled up card height for browser layout */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px) rotateY(0);
+    pointer-events: none; /* Block click flips when hidden */
+}
+
+.card-flip.show {
+    opacity: 1;
+    transform: translateY(0) rotateY(0);
+    pointer-events: auto;
+}
+
+.card-flip.flipped {
+    transform: rotateY(180deg);
+}
+
+/* ================= PREMIUM PHYSICAL CARD ================= */
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 26px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    color: #1e293b;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+}
+
+/* High-End Accent Top Stripe */
+.card-accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background: linear-gradient(to right, #1e3b8b, #0f172a);
+    border-bottom: 2px solid #d97706; /* gold accent */
+}
+
+/* FRONT CARD STRUCTURE */
+.front-top,
+.front-content,
+.barcode {
+    position: relative;
+    z-index: 2; /* Sits above watermark */
+}
+
+.front-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+}
+
+.logo-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.header-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header-details h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+}
+
+.card-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 3px;
+}
+
+/* Card Content Area */
+.front-content {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
+
+.front-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.detail-item.name-item {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+/* Clean grid for key details */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 10px;
+}
+
+.info-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.64rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.3px;
+}
+
+.info-val {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Address Block */
+.address-block {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.address-text {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: #475569;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Official Watermark Background */
+.card-watermark {
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    transform: translateY(-38%);
+    width: 170px;
+    height: 170px;
+    opacity: 0.06;
+    pointer-events: none;
+    object-fit: contain;
+    filter: grayscale(1);
+    z-index: 1;
+}
+
+/* Profile Photo on Right */
+.front-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-frame {
+    width: 105px;
+    height: 125px;
+    border-radius: 12px;
+    border: 3px solid #1e293b;
+    background: #f8fafc;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Barcode */
+.barcode {
+    background: #f1f5f9;
+    height: 32px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    border-radius: 6px;
+    letter-spacing: 4px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+/* ================= BACK CARD DESIGN ================= */
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.back-top {
+    margin-top: 6px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.back-top h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.back-content {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
+
+.back-instructions {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.back-instructions p {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #475569;
+}
+
+.signature-area {
+    margin-top: 10px;
+    width: 150px;
+}
+
+.signature-line {
+    border-bottom: 1px solid #94a3b8;
+    height: 25px;
+    margin-bottom: 4px;
+}
+
+.signature-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    display: block;
+}
+
+.qr-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    gap: 4px;
+}
+
+.qr-wrapper img {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #cbd5e1;
+    padding: 2px;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+.qr-text {
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+/* ================= RESULT ACTIONS BUTTON PANEL ================= */
+.result-actions {
+    display: none; /* hidden until shown via JS */
+    gap: 15px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 480px;
+    justify-content: center;
+    flex-wrap: wrap;
+    z-index: 10;
+}
+
+.btn-print {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-print:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn-edit {
+    background: #ffffff;
+    color: #3b82f6;
+    border: 2px solid #3b82f6;
+}
+
+.btn-edit:hover {
+    background: #eff6ff;
+}
+
+.btn-reset {
+    background: #ffffff;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+}
+
+.btn-reset:hover {
+    background: #fee2e2;
+}
+
+/* ================= MOBILE RESPONSIVENESS ================= */
+@media (max-width: 960px) {
+    body {
+        padding: 40px 10px;
+    }
+
+    .wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .form-card {
+        width: 100%;
+        max-width: 480px;
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+
+    .form-card {
+        padding: 20px 15px;
+    }
+
+    .card-type-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card-flip {
+        width: 100%;
+        max-width: 380px;
+        height: 250px;
+    }
+
+    .card-front, .card-back {
+        padding: 14px 16px;
+        border-radius: 12px;
+    }
+
+    .detail-item.name-item {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .info-grid {
+        gap: 4px 6px;
+    }
+
+    .info-label {
+        font-size: 0.58rem;
+    }
+
+    .info-val {
+        font-size: 0.72rem;
+    }
+
+    .address-block {
+        margin-top: 6px;
+        padding-top: 4px;
+    }
+
+    .address-text {
+        font-size: 0.62rem;
+    }
+
+    .photo-frame {
+        width: 75px;
+        height: 90px;
+    }
+
+    .barcode {
+        height: 28px;
+        font-size: 0.65rem;
+    }
+
+    .qr-wrapper {
+        width: 75px;
+    }
+
+    .qr-wrapper img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .result-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+        padding: 0 10px;
+    }
+
+    .result-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ================= PRINT MODE ================= */
+@media print {
+    body {
+        background: #ffffff !important;
+        padding: 0;
+        margin: 0;
+    }
+
+    .form-card,
+    h1,
+    #resultActions,
+    .result-actions,
+    .wizard-header,
+    .glow-sphere {
+        display: none !important;
+    }
+
+    .wrapper {
+        display: block;
+        width: 100%;
+    }
+
+    .card-container {
+        width: 100%;
+        perspective: none;
+    }
+
+    .card-flip {
+        width: 480px;
+        height: auto;
+        transform: none !important;
+        opacity: 1 !important;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .card-front,
+    .card-back {
+        position: relative !important;
+        transform: none !important;
+        backface-visibility: visible;
+        margin: 30px auto !important;
+        box-shadow: none !important;
+        border: 2px solid #1e293b !important;
+        page-break-inside: avoid;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        height: 300px;
+    }
+
+    .card-accent-bar {
+        background: #1e3b8b !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
